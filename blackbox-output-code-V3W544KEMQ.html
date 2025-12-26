@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vape Shop - Buy with UPI</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f4f4; }
+        header { text-align: center; background-color: #333; color: white; padding: 10px; }
+        .product { border: 1px solid #ddd; padding: 10px; margin: 10px; display: inline-block; width: 200px; background: white; }
+        button { background-color: #4CAF50; color: white; border: none; padding: 10px; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+        #cart { margin-top: 20px; padding: 10px; background: white; border: 1px solid #ddd; }
+        #checkout { display: none; margin-top: 20px; }
+        input { margin: 5px; padding: 8px; width: 100%; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to VapeShop</h1>
+        <p>Buy premium vapes with UPI payment</p>
+    </header>
+
+    <section id="products">
+        <h2>Products</h2>
+        <div class="product">
+            <h3>Vape Device A</h3>
+            <p>Price: ₹500</p>
+            <button onclick="addToCart('Vape Device A', 500)">Add to Cart</button>
+        </div>
+        <div class="product">
+            <h3>E-Liquid B</h3>
+            <p>Price: ₹200</p>
+            <button onclick="addToCart('E-Liquid B', 200)">Add to Cart</button>
+        </div>
+        <!-- Add more products as needed -->
+    </section>
+
+    <section id="cart">
+        <h2>Your Cart</h2>
+        <ul id="cartItems"></ul>
+        <p>Total: ₹<span id="total">0</span></p>
+        <button onclick="showCheckout()">Proceed to Checkout</button>
+    </section>
+
+    <section id="checkout">
+        <h2>Checkout with UPI</h2>
+        <form id="upiForm">
+            <label for="upiId">UPI ID (e.g., user@paytm):</label>
+            <input type="text" id="upiId" placeholder="Enter your UPI ID" required>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" readonly>
+            <button type="submit">Pay Now</button>
+        </form>
+        <p id="paymentStatus"></p>
+    </section>
+
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(product, price) {
+            cart.push({ product, price });
+            total += price;
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.product} - ₹${item.price}`;
+                cartItems.appendChild(li);
+            });
+            document.getElementById('total').textContent = total;
+        }
+
+        function showCheckout() {
+            if (cart.length === 0) {
+                alert('Cart is empty!');
+                return;
+            }
+            document.getElementById('checkout').style.display = 'block';
+            document.getElementById('amount').value = total;
+        }
+
+        document.getElementById('upiForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const upiId = document.getElementById('upiId').value;
+            const status = document.getElementById('paymentStatus');
+            // Simulate UPI payment (in reality, this would call a payment API)
+            status.textContent = `Payment of ₹${total} via UPI ID ${upiId} simulated successfully! (Note: This is not a real transaction.)`;
+            cart = [];
+            total = 0;
+            updateCart();
+            document.getElementById('checkout').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
